@@ -1,13 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <title>Document</title>
+  <title>Image Analysis</title>
 </head>
 <body>
-    "SetupRoaster"
-    <script src="script.js"></script>
+
+  <input type="file" id="imageUpload" accept="image/*">
+  <button onclick="analyzeImage()">Analyze</button>
+  <div id="result"></div>
+
+  <script>
+    async function analyzeImage() {
+      const imageFile = document.getElementById('imageUpload').files[0];
+
+      if (imageFile) {
+        const reader = new FileReader();
+        reader.readAsDataURL(imageFile);
+
+        reader.onloadend = async () => {
+          const imageDataUrl = reader.result;
+
+          try {
+            const response = await fetch('/processImage', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ imageData: imageDataUrl })
+            });
+
+            if (response.ok) {
+              const result = await response.text();
+              document.getElementById('result').innerHTML = result;
+            } else {
+              console.error('Error:', response.statusText);
+              document.getElementById('result').innerHTML = 'Error processing image.';
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('result').innerHTML = 'Error processing image.';
+          }
+        }
+      }
+    }
+  </script>
+
 </body>
 </html>
