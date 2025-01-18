@@ -1,15 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const fetch = require('node-fetch');  // To fetch the image from the URL
-require('dotenv').config();  // Load environment variables from .env file
+const { GoogleGenerativeAI } = require('google-generative-ai');  // Import the GoogleGenerativeAI class
+const fetch = require('node-fetch');
+require('dotenv').config();  // Import the dotenv package to read environment variables
 
 const app = express();
 const port = 3000;
 
 // Access the API key from environment variables
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);  // Use environment variable for security
-const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "models/gemini-2.0-flash" });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/processImage', async (req, res) => {
     try {
         const imgUrl = req.body.imgUrl;
-        console.log("Image URL:", imgUrl);
+        console.log("Picture URL:", imgUrl);
 
         if (!imgUrl.startsWith('http://') && !imgUrl.startsWith('https://')) {
             return res.status(400).send('Invalid URL');
@@ -25,7 +25,7 @@ app.post('/processImage', async (req, res) => {
 
         const imageResp = await fetch(imgUrl);
         if (!imageResp.ok) {
-            throw new Error('Failed to fetch image');
+            throw new Error("Failed to fetch image from URL");
         }
 
         const imageBuffer = await imageResp.arrayBuffer();
