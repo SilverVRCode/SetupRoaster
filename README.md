@@ -1,5 +1,5 @@
 # SetupRoaster
-First, it stole your job. Now, it's stealing your joy.
+AI. First, it stole your job. Now, it's stealing your joy.
 
 # What is it?
 SetupRoaster is a web app that roasts an image of your computer setup, using Google's Gemini API.
