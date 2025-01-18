@@ -1,49 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Image Analysis</title>
-</head>
-<body>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Setup Roaster</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
 
-  <input type="file" id="imageUpload" accept="image/*">
-  <button onclick="analyzeImage()">Analyze</button>
-  <div id="result"></div>
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
 
-  <script>
-    async function analyzeImage() {
-      const imageFile = document.getElementById('imageUpload').files[0];
+    .container h1 {
+      margin-bottom: 20px;
+    }
 
-      if (imageFile) {
-        const reader = new FileReader();
-        reader.readAsDataURL(imageFile);
+    .container input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
 
-        reader.onloadend = async () => {
-          const imageDataUrl = reader.result;
+    .container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #FF5733;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-          try {
-            const response = await fetch('/processImage', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ imageData: imageDataUrl })
-            });
+    .container button:hover {
+      background-color: #D13F1A;
+    }
 
-            if (response.ok) {
-              const result = await response.text();
-              document.getElementById('result').innerHTML = result;
-            } else {
-              console.error('Error:', response.statusText);
-              document.getElementById('result').innerHTML = 'Error processing image.';
-            }
-          } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('result').innerHTML = 'Error processing image.';
-          }
-        }
+    .container button:active {
+      background-color: #A73510;
+    }
+
+    .response {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: none;
+  white-space: pre-wrap; /* Makes the text wrap */
+  word-wrap: break-word; /* Ensures long words are wrapped */
+  overflow-y: auto; /* Adds scroll if content is too large */
+  min-height: 100px; /* Sets a minimum height */
+  max-height: 500px; /* Optionally, limit the height for better UX */
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding is included in the width calculation */
+}
+
+    .camera-button {
+      background-color: #28a745;
+      margin-top: 10px;
+    }
+
+    #imagePreview {
+      margin-top: 20px;
+      max-width: 100%;
+      max-height: 300px;
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
       }
     }
-  </script>
 
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Setup Roaster</h1>
+
+    <!-- File input for uploading an image -->
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="submitSetup()">Submit Setup for Roasting</button>
+
+    <!-- Camera button to take a picture -->
+    <button class="camera-button" onclick="openCamera()">Use Camera</button>
+
+    <!-- Display the captured image -->
+    <img id="imagePreview" alt="Captured image preview">
+
+    <div id="response" class="response">
+      <h3>Roast Result:</h3>
+      <p id="roastResult">Waiting for roast...</p>
+    </div>
+  </div>
+
+  <script>
+    // Function to simulate submitting the setup to the API for roasting
+    function submitSetup() {
+    const imageInput = document.getElementById('imageInput');
+    const responseDiv = document.getElementById('response');
+    const roastResult = document.getElementById('roastResult');
+
+    if (!imageInput.files.length) {
+      alert('Please upload an image of your setup!');
+      return;
+    }
+
+    const file = imageInput.files[0];
+    const reader = new FileReader();
+
+    // Convert the image file to a Base64 string
+    reader.onload = function (e) {
+      const base64Image = e.target.result.split(',')[1]; // Remove the 'data:image/*;base64,' prefix
+
+      // Make the API call to submit the Base64 image to the roasting API
+      fetch('http://127.0.0.1:3000/processImage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imgData: base64Image }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Extract and display only the 'text' part of the response JSON
+          roastResult.textContent = data?.response?.candidates?.[0]?.content?.parts?.[0]?.text || 'No roast generated.';
+          responseDiv.style.display = 'block';
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          roastResult.textContent = 'Something went wrong, please try again!';
+          responseDiv.style.display = 'block';
+        });
+    };
+
+    reader.readAsDataURL(file); // Read the image file as a Base64 data URL
+  }
+
+    // Function to open the camera and take a picture
+    function openCamera() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.capture = 'camera';  // Use the device camera
+      input.click();
+
+      // When the user selects a file from the camera
+      input.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            // Display the captured image preview
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+
+            // Automatically upload the captured image by copying it to the original file input
+            imageInput.files = event.target.files;  // Manually assign the file to the file input
+          };
+          reader.readAsDataURL(file); // Read the image as a data URL
+        }
+      });
+    }
+  </script>
 </body>
 </html>
