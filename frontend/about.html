@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <title>'About SetupRoaster'</title>
+</head>
+
+<body>
+    <style>
+        .container {
+            background: rgba(255, 255, 255, 0.30);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(11.3px);
+            -webkit-backdrop-filter: blur(11.3px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        body {
+            font-family: "Roboto", serif;
+            color: rgb(0, 0, 0);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #background {
+            width: 100vw;
+            height: 100vh;
+            z-index: -100;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <div id="background"></div>
+    <div id="hero" class="container">
+        <div id="hero-content">
+            <h1>SetupRoaster</h1>
+            <p>When AI was still a phenomenon, a friend and I decided that eventually, we would make a PC setup roaster.
+                This year, we decided it was time.
+            </p>
+            <h2>How was it made?</h2>
+            <p>SetupRoaster was created in Node.js (backend) and vanilla JavaScript (frontend).
+                The frontend sends an image to the backend, which sends it to Google's Gemini API.
+                Then, it takes the JSON response, converts it to plain text, and sends it back to the frontend for you
+                to see.
+            </p>
+        </div>
+    </div>
+    <script>
+        VANTA.GLOBE({
+            el: "#background",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00
+        })
+    </script>
+    </body>
+
+</html>
