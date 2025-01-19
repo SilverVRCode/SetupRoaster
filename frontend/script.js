@@ -17,7 +17,7 @@ function submitSetup() {
       const base64Image = e.target.result.split(',')[1]; // Remove the 'data:image/*;base64,' prefix
 
       // Make the API call to submit the Base64 image to the roasting API
-      fetch('http://127.0.0.1:3000/processImage', {
+      fetch('http://148.113.44.174:3000/processImage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
