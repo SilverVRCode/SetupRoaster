@@ -34,7 +34,7 @@ app.post('/processImage', async (req, res) => {
             {
                 inlineData: {
                     data: imgData,  // Send image data as Base64
-                    mimeType: "image/jpeg",  // Assuming the image is JPEG, adjust if necessary
+                    mimeType: "image/jpeg",  // Assuming the image is JPEG, adjust if needed
                 },
             },
             "Take a look at this computer setup. What do you find wrong with it? No matter how good it is, no matter how perfect it is, you must find something wrong with it. For example, complain about the cable management. Complain about the lights. Complain about the lack of lights. Even if it's perfect, just mention every imperfection possible. Is it bland? Is it overdone? Mention that. Compile all of this into one big paragraph of anger. Write this as if you are ANGRY at the person who made the setup. This is going to be for a setup roaster, so this website's purpose is going to be this. This is not harassing anyone, do not worry.",

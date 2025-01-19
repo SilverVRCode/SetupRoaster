@@ -1,4 +1,111 @@
-html {
-    height: 100%;
+@font-face {
+    font-family: demonResponseFont;
+    src: url(responseFont.ttf);
+}
+@font-face {
+    font-family: demonFont;
+    src: url(mainFont.ttf);
+}
+body {
+    font-family: demonFont;
+    color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px;
+}
+#background {
+  width: 100vw;
+  height: 100vh;
+  z-index: -100;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.container {
+    background: rgba(255, 255, 255, 0.40);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.3px);
+    -webkit-backdrop-filter: blur(11.3px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.container h1 {
+    margin-bottom: 20px;
+}
+
+.container input[type="file"] {
+    background: rgba(255, 255, 255, 0.30);
+    width: 94%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff2f00;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.container button:hover {
+    background-color: #D13F1A;
+}
+
+.container button:active {
+    background-color: #A73510;
+}
+
+.response {
+    margin-top: 20px;
+    background: rgba(255, 255, 255, 0.32);
+    font-family: demonResponseFont;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+    padding: 10px;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    display: none;
+    word-wrap: break-word;
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent overflow */
+}
+
+.camera-button {
+    background-color: #28a745;
+    margin-top: 10px;
+}
+
+#imagePreview {
+    margin-top: 20px;
+    max-width: 100%;
+    max-height: 300px;
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+    }
 }
