@@ -1,3 +1,5 @@
+# If it takes a while to generate, it is not broken, it is simply very slow.
+
 # SetupRoaster
 AI. First, it stole your job. Now, it's stealing your joy.
 
